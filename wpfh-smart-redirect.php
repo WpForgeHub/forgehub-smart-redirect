@@ -37,10 +37,10 @@ if ( ! function_exists( 'wpfh_sr_fs' ) ) {
 
 			if ( function_exists( 'fs_dynamic_init' ) ) {
 				$wpfh_sr_fs = fs_dynamic_init( array(
-					'id'             => '17964',
+					'id'             => '45084',
 					'slug'           => 'wpfh-smart-redirect',
 					'type'           => 'plugin',
-					'public_key'     => 'pk_dummy_sr_placeholder_key',
+					'public_key'     => 'pk_af5c1cdaff59df492e19650419acc',
 					'is_premium'     => false,
 					'has_addons'     => false,
 					'has_paid_plans' => true,
