@@ -3,7 +3,7 @@
  * Plugin Name:       WPFH Smart Redirect & 404 Auto-Healer
  * Plugin URI:        https://wpforgehub.com/plugins/wpfh-smart-redirect/
  * Description:       Intelligent 404 auto-healing with fuzzy slug matching, outbound upgrade click tracker, and instant 301 redirect management.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            WPForgeHub
  * Author URI:        https://wpforgehub.com
  * License:           GPL-2.0+
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPFH_SR_VERSION', '1.0.0' );
+define( 'WPFH_SR_VERSION', '1.1.0' );
 define( 'WPFH_SR_FILE', __FILE__ );
 define( 'WPFH_SR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WPFH_SR_URL', plugin_dir_url( __FILE__ ) );
@@ -49,15 +49,27 @@ if ( ! function_exists( 'wpfh_sr_fs' ) ) {
 						'first-path' => 'tools.php?page=wpfh-smart-redirect',
 					),
 				) );
+			} else {
+				// Fallback object for Free / Filter-based Pro distribution
+				$wpfh_sr_fs = new class {
+					public function can_use_premium_code() {
+						return (bool) apply_filters( 'fs_can_use_premium_code__wpfh-smart-redirect', false );
+					}
+					public function is__premium_only() { return false; }
+					public function is_plan( $plan ) {
+						return (bool) apply_filters( 'fs_is_plan__wpfh-smart-redirect', false, $plan );
+					}
+					public function get_upgrade_url() {
+						return 'https://wpforgehub.com/plugins/wpfh-smart-redirect/#pricing';
+					}
+				};
 			}
 		}
 
 		return $wpfh_sr_fs;
 	}
 
-	if ( file_exists( WPFH_SR_PATH . 'freemius/start.php' ) ) {
-		wpfh_sr_fs();
-	}
+	wpfh_sr_fs();
 }
 
 /**
@@ -86,6 +98,31 @@ final class WPFH_Smart_Redirect {
 
 		WPFH_SR_Engine::get_instance();
 		WPFH_SR_Admin::get_instance();
+
+		// Pro Modules
+		if ( function_exists( 'wpfh_sr_fs' ) && wpfh_sr_fs()->can_use_premium_code() ) {
+			$pro_sentinel = WPFH_SR_PATH . 'includes/pro/class-wpfh-sr-sentinel.php';
+			$pro_regex    = WPFH_SR_PATH . 'includes/pro/class-wpfh-sr-regex.php';
+			$pro_alerts   = WPFH_SR_PATH . 'includes/pro/class-wpfh-sr-alerts.php';
+			$pro_utm      = WPFH_SR_PATH . 'includes/pro/class-wpfh-sr-utm.php';
+
+			if ( file_exists( $pro_sentinel ) ) {
+				require_once $pro_sentinel;
+				WPFH_SR_Sentinel::get_instance();
+			}
+			if ( file_exists( $pro_regex ) ) {
+				require_once $pro_regex;
+				WPFH_SR_Regex::get_instance();
+			}
+			if ( file_exists( $pro_alerts ) ) {
+				require_once $pro_alerts;
+				WPFH_SR_Alerts::get_instance();
+			}
+			if ( file_exists( $pro_utm ) ) {
+				require_once $pro_utm;
+				WPFH_SR_UTM::get_instance();
+			}
+		}
 	}
 }
 
