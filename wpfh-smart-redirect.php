@@ -3,7 +3,7 @@
  * Plugin Name:       WPFH Smart Redirect & 404 Auto-Healer
  * Plugin URI:        https://wpforgehub.com/plugins/wpfh-smart-redirect/
  * Description:       Intelligent 404 auto-healing with fuzzy slug matching, outbound upgrade click tracker, and instant 301 redirect management.
- * Version:           1.1.0
+ * Version:           1.1.1
  * Author:            WPForgeHub
  * Author URI:        https://wpforgehub.com
  * License:           GPL-2.0+
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPFH_SR_VERSION', '1.1.0' );
+define( 'WPFH_SR_VERSION', '1.1.1' );
 define( 'WPFH_SR_FILE', __FILE__ );
 define( 'WPFH_SR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WPFH_SR_URL', plugin_dir_url( __FILE__ ) );
@@ -53,10 +53,12 @@ if ( ! function_exists( 'wpfh_sr_fs' ) ) {
 				// Fallback object for Free / Filter-based Pro distribution
 				$wpfh_sr_fs = new class {
 					public function can_use_premium_code() {
+						// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 						return (bool) apply_filters( 'fs_can_use_premium_code__wpfh-smart-redirect', false );
 					}
 					public function is__premium_only() { return false; }
 					public function is_plan( $plan ) {
+						// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 						return (bool) apply_filters( 'fs_is_plan__wpfh-smart-redirect', false, $plan );
 					}
 					public function get_upgrade_url() {
@@ -91,7 +93,7 @@ final class WPFH_Smart_Redirect {
 	}
 
 	public function init() {
-		load_plugin_textdomain( 'wpfh-smart-redirect', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+		// Note: load_plugin_textdomain is intentionally omitted as WordPress.org automatically loads translations since WP 4.6.
 
 		require_once WPFH_SR_PATH . 'includes/class-wpfh-sr-engine.php';
 		require_once WPFH_SR_PATH . 'includes/class-wpfh-sr-admin.php';
