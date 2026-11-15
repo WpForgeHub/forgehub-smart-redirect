@@ -3,6 +3,7 @@
 [![License: GPL v2+](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)](https://php.net/)
+[![Release](https://img.shields.io/badge/Release-v1.1.0-purple.svg)](https://github.com/WpForgeHub/wpfh-smart-redirect/releases/tag/v1.1.0)
 
 **WPFH Smart Redirect** transforms dead-end 404 error pages into self-healing, revenue-retaining 301 redirects using fuzzy slug similarity matching.
 

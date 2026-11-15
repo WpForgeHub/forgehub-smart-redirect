@@ -4,7 +4,7 @@ Tags: 404 redirect, smart redirect, 301 redirect, 404 healer, fuzzy matching
 Requires at least: 6.0
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,13 @@ Broken links and 404 errors destroy user experience and drain search engine rank
 3. Access **Tools > Smart Redirect** to manage custom rules and view auto-healed logs.
 
 == Changelog ==
+
+= 1.1.0 =
+* Feature (Pro): Automated Post & Product Slug Change Sentinel.
+* Feature (Pro): Regex wildcard redirect engine with backreference substitution.
+* Feature (Pro): 404 Spike alerts with email notifications and webhook triggers.
+* Feature (Pro): UTM and analytics query parameter preservation across redirects.
+* Enhancement: Freemius license filter integration (fs_can_use_premium_code__wpfh-smart-redirect).
 
 = 1.0.0 =
 * Initial public release.
