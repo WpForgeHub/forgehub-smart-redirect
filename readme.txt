@@ -1,10 +1,10 @@
-=== WPFH Smart Redirect & 404 Auto-Healer ===
+=== Smart Redirect & 404 Auto-Healer ===
 Contributors: wpforgehub
 Tags: 404 redirect, smart redirect, 301 redirect, 404 healer, fuzzy matching
 Requires at least: 6.0
-Tested up to: 6.7
+Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,7 +14,7 @@ Intelligent 404 auto-healing with fuzzy slug matching, outbound upgrade click tr
 
 Broken links and 404 errors destroy user experience and drain search engine ranking signals. Typoed URLs from social media or old inbound links typically result in a dead end.
 
-**WPFH Smart Redirect** solves this through intelligent self-healing:
+**Smart Redirect** solves this through intelligent self-healing:
 
 * **Fuzzy 404 Auto-Healing**: When a visitor hits a 404 page, the algorithm computes slug similarity against published posts, pages, and WooCommerce products. If a high-confidence match is detected (>= 65%), it automatically issues a seamless 301 redirect to the intended destination.
 * **Outbound SaaS & Upgrade Tracker**: Track clicks through clean shortlinks like `/wpfh-pro/{plugin}` with click counts and last-clicked timestamps.
@@ -35,18 +35,22 @@ Broken links and 404 errors destroy user experience and drain search engine rank
 
 == Installation ==
 
-1. Upload plugin files to `/wp-content/plugins/wpfh-smart-redirect`.
+1. Upload plugin files to `/wp-content/plugins/forgehub-smart-redirect`.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Access **Tools > Smart Redirect** to manage custom rules and view auto-healed logs.
 
 == Changelog ==
+
+= 1.1.2 =
+* Rename: plugin slug and text domain are now forgehub-smart-redirect (WordPress.org naming rules).
+* Docs: README and readme.txt updated to the unified repository standard.
 
 = 1.1.0 =
 * Feature (Pro): Automated Post & Product Slug Change Sentinel.
 * Feature (Pro): Regex wildcard redirect engine with backreference substitution.
 * Feature (Pro): 404 Spike alerts with email notifications and webhook triggers.
 * Feature (Pro): UTM and analytics query parameter preservation across redirects.
-* Enhancement: Freemius license filter integration (fs_can_use_premium_code__wpfh-smart-redirect).
+* Enhancement: Freemius license filter integration (fs_can_use_premium_code__forgehub-smart-redirect).
 
 = 1.0.0 =
 * Initial public release.

@@ -1,6 +1,6 @@
 <?php
 /**
- * WPFH Smart Redirect Admin Settings & Logs
+ * Smart Redirect Admin Settings & Logs
  *
  * @package WPFH_Smart_Redirect
  */
@@ -28,17 +28,17 @@ class WPFH_SR_Admin {
 
 	public function add_menu_page() {
 		add_management_page(
-			__( 'Smart Redirect & 404', 'wpfh-smart-redirect' ),
-			__( 'Smart Redirect', 'wpfh-smart-redirect' ),
+			__( 'Smart Redirect & 404', 'forgehub-smart-redirect' ),
+			__( 'Smart Redirect', 'forgehub-smart-redirect' ),
 			'manage_options',
-			'wpfh-smart-redirect',
+			'forgehub-smart-redirect',
 			array( $this, 'render_admin_page' )
 		);
 	}
 
 	public function add_action_links( $links ) {
-		$settings_link = '<a href="' . esc_url( admin_url( 'tools.php?page=wpfh-smart-redirect' ) ) . '">' . __( 'Redirects & 404s', 'wpfh-smart-redirect' ) . '</a>';
-		$pro_link      = '<a href="https://wpforgehub.com/plugins/wpfh-smart-redirect/" style="color:#10b981;font-weight:700;" target="_blank">' . __( 'Upgrade to Pro', 'wpfh-smart-redirect' ) . '</a>';
+		$settings_link = '<a href="' . esc_url( admin_url( 'tools.php?page=forgehub-smart-redirect' ) ) . '">' . __( 'Redirects & 404s', 'forgehub-smart-redirect' ) . '</a>';
+		$pro_link      = '<a href="https://wpforgehub.com/product/smart-redirect/" style="color:#10b981;font-weight:700;" target="_blank">' . __( 'Upgrade to Pro', 'forgehub-smart-redirect' ) . '</a>';
 		array_unshift( $links, $settings_link, $pro_link );
 		return $links;
 	}
@@ -73,8 +73,8 @@ class WPFH_SR_Admin {
 		$rules      = get_option( 'wpfh_sr_custom_redirects', array() );
 		?>
 		<div class="wrap" style="max-width:1050px;">
-			<h1>⚡ <?php esc_html_e( 'WPFH Smart Redirect & 404 Auto-Healer', 'wpfh-smart-redirect' ); ?></h1>
-			<p><?php esc_html_e( 'Self-healing 404 redirection engine and SaaS outbound route tracker.', 'wpfh-smart-redirect' ); ?></p>
+			<h1>⚡ <?php esc_html_e( 'Smart Redirect & 404 Auto-Healer', 'forgehub-smart-redirect' ); ?></h1>
+			<p><?php esc_html_e( 'Self-healing 404 redirection engine and SaaS outbound route tracker.', 'forgehub-smart-redirect' ); ?></p>
 
 			<!-- Quick Stats -->
 			<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:16px;margin:24px 0;">
@@ -105,7 +105,7 @@ class WPFH_SR_Admin {
 
 			<!-- Add Custom Redirect -->
 			<div style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:24px;color:#e2e8f0;margin-bottom:24px;">
-				<h3 style="margin-top:0;color:#f8fafc;">➕ <?php esc_html_e( 'Add Custom Redirect Rule', 'wpfh-smart-redirect' ); ?></h3>
+				<h3 style="margin-top:0;color:#f8fafc;">➕ <?php esc_html_e( 'Add Custom Redirect Rule', 'forgehub-smart-redirect' ); ?></h3>
 				<form method="post" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
 					<?php wp_nonce_field( 'wpfh_sr_nonce' ); ?>
 					<input type="hidden" name="wpfh_sr_action" value="add_redirect" />
@@ -116,15 +116,15 @@ class WPFH_SR_Admin {
 						<option value="301">301 Permanent</option>
 						<option value="302">302 Temporary</option>
 					</select>
-					<button type="submit" class="button button-primary"><?php esc_html_e( 'Add Redirect', 'wpfh-smart-redirect' ); ?></button>
+					<button type="submit" class="button button-primary"><?php esc_html_e( 'Add Redirect', 'forgehub-smart-redirect' ); ?></button>
 				</form>
 			</div>
 
 			<!-- Auto-Healed Log Table -->
 			<div style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:24px;color:#e2e8f0;margin-bottom:24px;">
-				<h3 style="margin-top:0;color:#f8fafc;">✨ <?php esc_html_e( 'Recent Auto-Healed 404s', 'wpfh-smart-redirect' ); ?></h3>
+				<h3 style="margin-top:0;color:#f8fafc;">✨ <?php esc_html_e( 'Recent Auto-Healed 404s', 'forgehub-smart-redirect' ); ?></h3>
 				<?php if ( empty( $heal_log ) ) : ?>
-					<p style="color:#94a3b8;"><?php esc_html_e( 'No 404 auto-heal events yet. When a visitor requests a broken URL resembling a valid page, Smart Redirect will auto-heal and log it here.', 'wpfh-smart-redirect' ); ?></p>
+					<p style="color:#94a3b8;"><?php esc_html_e( 'No 404 auto-heal events yet. When a visitor requests a broken URL resembling a valid page, Smart Redirect will auto-heal and log it here.', 'forgehub-smart-redirect' ); ?></p>
 				<?php else : ?>
 					<table class="widefat striped" style="background:#1e293b;color:#e2e8f0;border:none;">
 						<thead>
@@ -153,10 +153,10 @@ class WPFH_SR_Admin {
 			<div class="wpfh-pro-card" style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:24px;color:#e2e8f0;">
 				<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #334155;padding-bottom:16px;margin-bottom:16px;">
 					<div>
-						<h3 style="margin:0;font-size:18px;color:#f8fafc;">🚀 WPFH Smart Redirect Pro</h3>
+						<h3 style="margin:0;font-size:18px;color:#f8fafc;">🚀 Smart Redirect Pro</h3>
 						<p style="margin:4px 0 0 0;color:#94a3b8;font-size:13px;">Advanced regex rules, 404 webhook alerts, and automated WooCommerce slug tracking.</p>
 					</div>
-					<a href="https://wpforgehub.com/plugins/wpfh-smart-redirect/" target="_blank" style="background:#10b981;color:#ffffff;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;display:inline-block;">Upgrade to Pro &rarr;</a>
+					<a href="https://wpforgehub.com/product/smart-redirect/" target="_blank" style="background:#10b981;color:#ffffff;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;display:inline-block;">Upgrade to Pro &rarr;</a>
 				</div>
 				<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:13px;">
 					<div style="background:#1e293b;padding:12px 16px;border-radius:8px;">

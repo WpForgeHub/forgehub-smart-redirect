@@ -1,6 +1,6 @@
 <?php
 /**
- * WPFH Smart Redirect Uninstall
+ * Smart Redirect Uninstall
  *
  * @package WPFH_Smart_Redirect
  */

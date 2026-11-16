@@ -54,7 +54,7 @@ class WPFH_SR_Alerts {
             $last_uri,
             $last_ip,
             current_time( 'mysql' ),
-            admin_url( 'tools.php?page=wpfh-smart-redirect&tab=logs' )
+            admin_url( 'tools.php?page=forgehub-smart-redirect&tab=logs' )
         );
 
         wp_mail( $admin_email, $subject, $message );

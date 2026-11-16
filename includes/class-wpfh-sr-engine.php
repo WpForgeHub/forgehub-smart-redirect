@@ -1,6 +1,6 @@
 <?php
 /**
- * WPFH Smart Redirect & 404 Auto-Healer Engine
+ * Smart Redirect & 404 Auto-Healer Engine
  *
  * @package WPFH_Smart_Redirect
  */

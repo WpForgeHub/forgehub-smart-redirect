@@ -1,11 +1,22 @@
-# WPFH Smart Redirect & 404 Auto-Healer
+# Smart Redirect & 404 Auto-Healer
 
-[![License: GPL v2+](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)](https://wordpress.org/)
-[![PHP](https://img.shields.io/badge/PHP-7.4%2B-blue.svg)](https://php.net/)
-[![Release](https://img.shields.io/badge/Release-v1.1.0-purple.svg)](https://github.com/WpForgeHub/wpfh-smart-redirect/releases/tag/v1.1.0)
+<p align="center">
+  <img src="assets/banner-1544x500.png" alt="Smart Redirect & 404 Auto-Healer banner" width="100%" />
+</p>
 
-**WPFH Smart Redirect** transforms dead-end 404 error pages into self-healing, revenue-retaining 301 redirects using fuzzy slug similarity matching.
+[![License](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+[![Version](https://img.shields.io/badge/Version-v1.1.2-purple.svg)](https://github.com/WpForgeHub/forgehub-smart-redirect/releases/tag/v1.1.2)
+[![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://php.net/)
+[![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-21759b.svg)](https://wordpress.org/)
+[![Tested](https://img.shields.io/badge/Tested-WP%207.1-brightgreen.svg)](https://wordpress.org/)
+[![wp.org](https://img.shields.io/badge/wp.org-pending%20review-orange.svg)](https://wordpress.org/plugins/)
+[![Freemius](https://img.shields.io/badge/Freemius-Pro%20available-0d9488.svg)](https://wpforgehub.com/)
+[![Architecture](https://img.shields.io/badge/Architecture-Zero%20Bloat-06b6d4.svg)](https://wpforgehub.com/)
+[![WCAG](https://img.shields.io/badge/WCAG-2.1%20AA%20ready-2563eb.svg)](https://wpforgehub.com/)
+
+
+
+**Smart Redirect** transforms dead-end 404 error pages into self-healing, revenue-retaining 301 redirects using fuzzy slug similarity matching.
 
 ---
 
@@ -30,4 +41,4 @@ When a user visits a mistyped or outdated URL (e.g. `/product/wpfh-ai-alt-text-f
 
 ## 📄 License
 
-GPL-2.0+ &copy; [WPForgeHub](https://wpforgehub.com).
+GPLv2 or later &copy; [WPForgeHub](https://wpforgehub.com).

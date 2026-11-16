@@ -1,16 +1,17 @@
 <?php
 /**
- * Plugin Name:       WPFH Smart Redirect & 404 Auto-Healer
- * Plugin URI:        https://wpforgehub.com/plugins/wpfh-smart-redirect/
+ * Plugin Name:       Smart Redirect & 404 Auto-Healer
+ * Plugin URI:        https://wpforgehub.com/product/smart-redirect/
  * Description:       Intelligent 404 auto-healing with fuzzy slug matching, outbound upgrade click tracker, and instant 301 redirect management.
- * Version:           1.1.1
+ * Version:           1.1.2
  * Author:            WPForgeHub
  * Author URI:        https://wpforgehub.com
- * License:           GPL-2.0+
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       wpfh-smart-redirect
+ * License:           GPLv2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       forgehub-smart-redirect
  * Domain Path:       /languages
  * Requires at least: 6.0
+ * Tested up to:      7.1
  * Requires PHP:      7.4
  */
 
@@ -18,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPFH_SR_VERSION', '1.1.1' );
+define( 'WPFH_SR_VERSION', '1.1.2' );
 define( 'WPFH_SR_FILE', __FILE__ );
 define( 'WPFH_SR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WPFH_SR_URL', plugin_dir_url( __FILE__ ) );
@@ -38,15 +39,15 @@ if ( ! function_exists( 'wpfh_sr_fs' ) ) {
 			if ( function_exists( 'fs_dynamic_init' ) ) {
 				$wpfh_sr_fs = fs_dynamic_init( array(
 					'id'             => '45084',
-					'slug'           => 'wpfh-smart-redirect',
+					'slug'           => 'forgehub-smart-redirect',
 					'type'           => 'plugin',
 					'public_key'     => 'pk_af5c1cdaff59df492e19650419acc',
 					'is_premium'     => false,
 					'has_addons'     => false,
 					'has_paid_plans' => true,
 					'menu'           => array(
-						'slug'       => 'wpfh-smart-redirect',
-						'first-path' => 'tools.php?page=wpfh-smart-redirect',
+						'slug'       => 'forgehub-smart-redirect',
+						'first-path' => 'tools.php?page=forgehub-smart-redirect',
 					),
 				) );
 			} else {
@@ -54,15 +55,15 @@ if ( ! function_exists( 'wpfh_sr_fs' ) ) {
 				$wpfh_sr_fs = new class {
 					public function can_use_premium_code() {
 						// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-						return (bool) apply_filters( 'fs_can_use_premium_code__wpfh-smart-redirect', false );
+						return (bool) apply_filters( 'fs_can_use_premium_code__forgehub-smart-redirect', false );
 					}
 					public function is__premium_only() { return false; }
 					public function is_plan( $plan ) {
 						// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
-						return (bool) apply_filters( 'fs_is_plan__wpfh-smart-redirect', false, $plan );
+						return (bool) apply_filters( 'fs_is_plan__forgehub-smart-redirect', false, $plan );
 					}
 					public function get_upgrade_url() {
-						return 'https://wpforgehub.com/plugins/wpfh-smart-redirect/#pricing';
+						return 'https://wpforgehub.com/product/smart-redirect/#pricing';
 					}
 				};
 			}
