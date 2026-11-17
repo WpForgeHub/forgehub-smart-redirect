@@ -37,7 +37,7 @@ class WPFH_SR_Admin {
 	}
 
 	public function add_action_links( $links ) {
-		$settings_link = '<a href="' . esc_url( admin_url( 'tools.php?page=forgehub-smart-redirect' ) ) . '">' . __( 'Redirects & 404s', 'forgehub-smart-redirect' ) . '</a>';
+		$settings_link = '<a href="' . esc_url( admin_url( 'tools.php?page=forgehub-smart-redirect' ) ) . '">' . __( 'Settings', 'forgehub-smart-redirect' ) . '</a>';
 		$pro_link      = '<a href="https://wpforgehub.com/product/smart-redirect/" style="color:#10b981;font-weight:700;" target="_blank">' . __( 'Upgrade to Pro', 'forgehub-smart-redirect' ) . '</a>';
 		array_unshift( $links, $settings_link, $pro_link );
 		return $links;
@@ -51,9 +51,9 @@ class WPFH_SR_Admin {
 		check_admin_referer( 'wpfh_sr_nonce' );
 
 		if ( 'add_redirect' === $_POST['wpfh_sr_action'] ) {
-			$from   = sanitize_text_field( wp_unslash( $_POST['redirect_from'] ) );
-			$to     = sanitize_text_field( wp_unslash( $_POST['redirect_to'] ) );
-			$status = intval( $_POST['redirect_status'] );
+			$from   = isset( $_POST['redirect_from'] ) ? sanitize_text_field( wp_unslash( $_POST['redirect_from'] ) ) : '';
+			$to     = isset( $_POST['redirect_to'] ) ? sanitize_text_field( wp_unslash( $_POST['redirect_to'] ) ) : '';
+			$status = isset( $_POST['redirect_status'] ) ? intval( $_POST['redirect_status'] ) : 301;
 
 			if ( ! empty( $from ) && ! empty( $to ) ) {
 				$rules = get_option( 'wpfh_sr_custom_redirects', array() );

@@ -1,10 +1,10 @@
-=== Smart Redirect & 404 Auto-Healer ===
+=== ForgeHub Smart Redirect ===
 Contributors: wpforgehub
 Tags: 404 redirect, smart redirect, 301 redirect, 404 healer, fuzzy matching
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,6 +41,10 @@ Broken links and 404 errors destroy user experience and drain search engine rank
 
 == Changelog ==
 
+
+= 1.1.3 =
+* Rename: plugin is now "ForgeHub Smart Redirect" (ForgeHub naming standard).
+* Fix: Plugins screen now shows a consistent "Settings" link.
 = 1.1.2 =
 * Rename: plugin slug and text domain are now forgehub-smart-redirect (WordPress.org naming rules).
 * Docs: README and readme.txt updated to the unified repository standard.

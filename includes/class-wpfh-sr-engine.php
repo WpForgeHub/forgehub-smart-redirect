@@ -104,6 +104,7 @@ class WPFH_SR_Engine {
 
 		global $wpdb;
 		// Fetch published post/page/product slugs
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- slug lookup on a 404 fallback path.
 		$posts = $wpdb->get_results( "
 			SELECT ID, post_name, post_type 
 			FROM {$wpdb->posts} 

@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name:       Smart Redirect & 404 Auto-Healer
+ * Plugin Name:       ForgeHub Smart Redirect
  * Plugin URI:        https://wpforgehub.com/product/smart-redirect/
  * Description:       Intelligent 404 auto-healing with fuzzy slug matching, outbound upgrade click tracker, and instant 301 redirect management.
- * Version:           1.1.2
+ * Version:           1.1.3
  * Author:            WPForgeHub
  * Author URI:        https://wpforgehub.com
  * License:           GPLv2 or later
@@ -11,7 +11,6 @@
  * Text Domain:       forgehub-smart-redirect
  * Domain Path:       /languages
  * Requires at least: 6.0
- * Tested up to:      7.1
  * Requires PHP:      7.4
  */
 
@@ -19,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPFH_SR_VERSION', '1.1.2' );
+define( 'WPFH_SR_VERSION', '1.1.3' );
 define( 'WPFH_SR_FILE', __FILE__ );
 define( 'WPFH_SR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WPFH_SR_URL', plugin_dir_url( __FILE__ ) );
