@@ -25,6 +25,8 @@ class WPFH_SR_Alerts {
 
     private function __construct() {
         add_action( 'wpfh_sr_on_404_recorded', array( $this, 'track_404_rate' ), 10, 2 );
+        add_action( 'admin_init', array( $this, 'handle_admin_actions' ) );
+        add_action( 'wpfh_sr_admin_pro_sections', array( $this, 'render_admin_section' ) );
     }
 
     public function track_404_rate( $uri, $ip ) {
@@ -73,5 +75,40 @@ class WPFH_SR_Alerts {
                 ) ),
             ) );
         }
+    }
+
+    public function handle_admin_actions() {
+        if ( ! isset( $_POST['wpfh_sr_pro_action'] ) || 'save_alert_settings' !== sanitize_key( wp_unslash( $_POST['wpfh_sr_pro_action'] ) ) ) {
+            return;
+        }
+        if ( ! current_user_can( 'manage_options' ) ) {
+            return;
+        }
+        check_admin_referer( 'wpfh_sr_pro_alerts_nonce' );
+        $threshold = isset( $_POST['wpfh_sr_404_alert_threshold'] ) ? max( 5, absint( $_POST['wpfh_sr_404_alert_threshold'] ) ) : 20;
+        $webhook   = isset( $_POST['wpfh_sr_alert_webhook_url'] ) ? esc_url_raw( wp_unslash( $_POST['wpfh_sr_alert_webhook_url'] ) ) : '';
+        update_option( 'wpfh_sr_404_alert_threshold', $threshold );
+        update_option( 'wpfh_sr_alert_webhook_url', $webhook );
+    }
+
+    public function render_admin_section() {
+        $threshold = absint( get_option( 'wpfh_sr_404_alert_threshold', 20 ) );
+        $webhook   = (string) get_option( 'wpfh_sr_alert_webhook_url', '' );
+        ?>
+        <div style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:24px;color:#e2e8f0;margin-bottom:24px;">
+            <h3 style="margin-top:0;color:#f8fafc;">🔔 <?php esc_html_e( 'Pro 404 Spike Alert Settings', 'forgehub-smart-redirect' ); ?></h3>
+            <form method="post" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                <?php wp_nonce_field( 'wpfh_sr_pro_alerts_nonce' ); ?>
+                <input type="hidden" name="wpfh_sr_pro_action" value="save_alert_settings" />
+                <label style="font-size:13px;color:#cbd5e1;"><?php esc_html_e( '5-Min Threshold:', 'forgehub-smart-redirect' ); ?>
+                    <input type="number" name="wpfh_sr_404_alert_threshold" min="5" value="<?php echo absint( $threshold ); ?>" style="background:#1e293b;border:1px solid #334155;color:#f8fafc;padding:6px 10px;border-radius:6px;width:80px;margin-left:6px;" />
+                </label>
+                <label style="font-size:13px;color:#cbd5e1;"><?php esc_html_e( 'Webhook URL (Slack/Discord):', 'forgehub-smart-redirect' ); ?>
+                    <input type="url" name="wpfh_sr_alert_webhook_url" value="<?php echo esc_attr( $webhook ); ?>" placeholder="https://hooks.slack.com/..." style="background:#1e293b;border:1px solid #334155;color:#f8fafc;padding:6px 10px;border-radius:6px;width:300px;margin-left:6px;" />
+                </label>
+                <button type="submit" class="button button-primary"><?php esc_html_e( 'Save Alert Settings', 'forgehub-smart-redirect' ); ?></button>
+            </form>
+        </div>
+        <?php
     }
 }

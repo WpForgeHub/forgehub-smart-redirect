@@ -235,7 +235,9 @@ class WPFH_SR_Admin {
 				<?php endif; ?>
 			</div>
 
-			<?php if ( ! $is_pro ) : ?>
+			<?php if ( $is_pro ) : ?>
+				<?php do_action( 'wpfh_sr_admin_pro_sections' ); ?>
+			<?php else : ?>
 			<!-- Pro Upsell -->
 			<div class="wpfh-pro-card" style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:24px;color:#e2e8f0;">
 				<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #334155;padding-bottom:16px;margin-bottom:16px;">

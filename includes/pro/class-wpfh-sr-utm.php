@@ -28,6 +28,11 @@ class WPFH_SR_UTM {
     }
 
     public function preserve_utm_parameters( $location, $status ) {
+        // Never modify admin or login redirects.
+        if ( is_admin() || false !== strpos( (string) $location, 'wp-admin' ) || false !== strpos( (string) $location, 'wp-login.php' ) ) {
+            return $location;
+        }
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public UTM/referral query parameters.
         if ( empty( $_GET ) ) {
             return $location;
         }
@@ -39,8 +44,10 @@ class WPFH_SR_UTM {
 
         $params_to_forward = array();
         foreach ( $tracking_keys as $key ) {
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             if ( isset( $_GET[ $key ] ) ) {
-                $params_to_forward[ $key ] = sanitize_text_field( $_GET[ $key ] );
+                // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+                $params_to_forward[ $key ] = sanitize_text_field( wp_unslash( $_GET[ $key ] ) );
             }
         }
 
