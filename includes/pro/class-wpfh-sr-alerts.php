@@ -47,14 +47,15 @@ class WPFH_SR_Alerts {
 
     public static function dispatch_spike_alert( $count, $last_uri, $last_ip ) {
         $admin_email = get_option( 'admin_email' );
-        $subject = sprintf( '[WPForgeHub Alert] 404 Spike Detected on %s (%d hits in 5m)', get_bloginfo( 'name' ), $count );
-        $message = sprintf(
+        $site_name   = wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES );
+        $subject     = sprintf( '[%s] 404 Spike Alert (%d hits in 5m)', $site_name, $count );
+        $message     = sprintf(
             "Hello Admin,\n\nA high-volume 404 spike was detected on your site.\n\nTotal 404s: %d\nLast Requested URI: %s\nClient IP: %s\nTime: %s\n\nPlease check your Smart Redirect dashboard: %s\n",
             $count,
             $last_uri,
             $last_ip,
             current_time( 'mysql' ),
-            admin_url( 'tools.php?page=forgehub-smart-redirect&tab=logs' )
+            admin_url( 'tools.php?page=forgehub-smart-redirect' )
         );
 
         wp_mail( $admin_email, $subject, $message );

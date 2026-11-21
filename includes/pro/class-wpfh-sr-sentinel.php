@@ -57,23 +57,35 @@ class WPFH_SR_Sentinel {
 
     public static function add_auto_redirect( $old_path, $new_path, $post_id = 0 ) {
         $rules = get_option( 'wpfh_sr_custom_redirects', array() );
+        if ( ! is_array( $rules ) ) {
+            $rules = array();
+        }
 
-        // Avoid duplicate
+        $norm_old = trim( (string) $old_path, '/' );
+        if ( '' === $norm_old ) {
+            return;
+        }
+
+        // Avoid duplicate (supports both from and legacy source keys).
         foreach ( $rules as $rule ) {
-            if ( rtrim( $rule['source'], '/' ) === rtrim( $old_path, '/' ) ) {
+            if ( ! is_array( $rule ) ) {
+                continue;
+            }
+            $existing_from = isset( $rule['from'] ) ? (string) $rule['from'] : ( isset( $rule['source'] ) ? (string) $rule['source'] : '' );
+            if ( strtolower( trim( $existing_from, '/' ) ) === strtolower( $norm_old ) ) {
                 return;
             }
         }
 
         $rules[] = array(
-            'id'          => 'auto_' . time() . '_' . $post_id,
-            'source'      => rtrim( $old_path, '/' ),
-            'target'      => rtrim( $new_path, '/' ),
-            'code'        => 301,
-            'hits'        => 0,
-            'created_at'  => current_time( 'mysql' ),
-            'auto_slug'   => true,
-            'post_id'     => $post_id,
+            'id'         => 'auto_' . time() . '_' . absint( $post_id ),
+            'from'       => '/' . $norm_old,
+            'to'         => home_url( '/' . trim( (string) $new_path, '/' ) . '/' ),
+            'status'     => 301,
+            'hits'       => 0,
+            'created_at' => current_time( 'mysql' ),
+            'auto_slug'  => true,
+            'post_id'    => absint( $post_id ),
         );
 
         update_option( 'wpfh_sr_custom_redirects', $rules, false );

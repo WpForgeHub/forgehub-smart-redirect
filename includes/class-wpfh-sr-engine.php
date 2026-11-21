@@ -25,82 +25,77 @@ class WPFH_SR_Engine {
 	}
 
 	public function intercept_requests() {
-		$uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
-		$path = trim( wp_parse_url( $uri, PHP_URL_PATH ), '/' );
+		$uri      = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+		$raw_path = wp_parse_url( $uri, PHP_URL_PATH );
+		$path     = trim( is_string( $raw_path ) ? $raw_path : '', '/' );
 
-		// 1. Check Outbound / Upgrade Route Tracker: /wpfh-pro/{slug} or /upgrade/{slug}
-		if ( preg_match( '#^(wpfh-pro|upgrade)/([a-zA-Z0-9_-]+)$#', $path, $matches ) ) {
-			$slug = sanitize_key( $matches[2] );
-			$this->track_upgrade_click( $slug );
-
-			// Redirect to target product or home
-			$target_url = $this->get_upgrade_target( $slug );
-			wp_safe_redirect( $target_url, 302 );
-			exit;
-		}
-
-		// 2. Check Custom 301/302 Redirect Rules
+		// 1. Check Custom 301/302 Redirect Rules (supports both from/to/status and legacy source/target/code).
 		$custom_redirects = get_option( 'wpfh_sr_custom_redirects', array() );
 		if ( ! empty( $custom_redirects ) && is_array( $custom_redirects ) ) {
 			foreach ( $custom_redirects as $rule ) {
-				$source = trim( $rule['from'], '/' );
+				if ( ! is_array( $rule ) ) {
+					continue;
+				}
+				$raw_from = isset( $rule['from'] ) ? (string) $rule['from'] : ( isset( $rule['source'] ) ? (string) $rule['source'] : '' );
+				$raw_to   = isset( $rule['to'] ) ? (string) $rule['to'] : ( isset( $rule['target'] ) ? (string) $rule['target'] : '' );
+				if ( '' === trim( $raw_from ) || '' === trim( $raw_to ) ) {
+					continue;
+				}
+				$source = trim( $raw_from, '/' );
+				// Never match empty source against homepage unless explicitly configured as '/'.
+				if ( '' === $source && '/' !== trim( $raw_from ) ) {
+					continue;
+				}
 				if ( strtolower( $source ) === strtolower( $path ) ) {
-					$status = isset( $rule['status'] ) ? intval( $rule['status'] ) : 301;
-					wp_safe_redirect( esc_url_raw( $rule['to'] ), $status );
+					$dest_url = esc_url_raw( $raw_to );
+					if ( '' === $dest_url ) {
+						continue;
+					}
+					// Prevent self-redirect loop.
+					$dest_path = wp_parse_url( $dest_url, PHP_URL_PATH );
+					$dest_host = wp_parse_url( $dest_url, PHP_URL_HOST );
+					$site_host = wp_parse_url( home_url(), PHP_URL_HOST );
+					if ( ( empty( $dest_host ) || strtolower( (string) $dest_host ) === strtolower( (string) $site_host ) )
+						&& strtolower( trim( is_string( $dest_path ) ? $dest_path : '', '/' ) ) === strtolower( $path )
+					) {
+						continue;
+					}
+					$status = isset( $rule['status'] ) ? intval( $rule['status'] ) : ( isset( $rule['code'] ) ? intval( $rule['code'] ) : 301 );
+					if ( ! in_array( $status, array( 301, 302, 307, 308 ), true ) ) {
+						$status = 301;
+					}
+					// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- Admin-configured redirects may target external URLs.
+					wp_redirect( $dest_url, $status );
 					exit;
 				}
 			}
 		}
 
-		// 3. 404 Auto-Healing
+		// 2. 404 Auto-Healing
 		if ( is_404() ) {
 			$this->handle_404_auto_healing( $path );
 		}
 	}
 
 	/**
-	 * Track upgrade and outbound clicks
-	 */
-	private function track_upgrade_click( $slug ) {
-		$stats = get_option( 'wpfh_sr_click_stats', array() );
-		if ( ! isset( $stats[ $slug ] ) ) {
-			$stats[ $slug ] = array(
-				'clicks'     => 0,
-				'last_click' => '',
-			);
-		}
-		$stats[ $slug ]['clicks']++;
-		$stats[ $slug ]['last_click'] = current_time( 'mysql' );
-		update_option( 'wpfh_sr_click_stats', $stats );
-	}
-
-	private function get_upgrade_target( $slug ) {
-		// Map slugs to product URLs
-		$map = array(
-			'aat'           => home_url( '/product/ai-alt-text-pro/' ),
-			'alt-text'      => home_url( '/product/ai-alt-text-pro/' ),
-			'portal'        => home_url( '/product/wpfh-customer-portal-pro/' ),
-			'checkout'      => home_url( '/product/wpfh-frictionless-checkout-pro/' ),
-			'freemius'      => home_url( '/product/wpfh-freemius-bridge-pro/' ),
-			'image-guard'   => home_url( '/product/wpfh-image-memory-guard-pro/' ),
-		);
-
-		return isset( $map[ $slug ] ) ? $map[ $slug ] : home_url( '/plugins/' );
-	}
-
-	/**
 	 * Fuzzy matching 404 auto-healer
 	 */
 	private function handle_404_auto_healing( $path ) {
-		$segments = explode( '/', $path );
+		// Never 301-redirect missing static asset files to HTML pages.
+		$static_ext = strtolower( (string) pathinfo( $path, PATHINFO_EXTENSION ) );
+		if ( in_array( $static_ext, array( 'css', 'js', 'map', 'png', 'jpg', 'jpeg', 'gif', 'webp', 'avif', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot', 'otf', 'xml', 'txt', 'json', 'pdf', 'zip', 'mp4', 'webm', 'mp3' ), true ) ) {
+			return;
+		}
+
+		$segments    = explode( '/', $path );
 		$target_slug = end( $segments );
 
 		if ( empty( $target_slug ) ) {
 			return;
 		}
 
-		// Clean common prefixes or suffixes
-		$clean_slug = str_replace( array( 'wpfh-', '-free', '-pro', '.html', '.php' ), '', $target_slug );
+		// Clean common file suffixes
+		$clean_slug = str_replace( array( '.html', '.htm', '.php', '.asp', '.aspx' ), '', $target_slug );
 
 		global $wpdb;
 		// Fetch published post/page/product slugs
@@ -161,5 +156,6 @@ class WPFH_SR_Engine {
 		) );
 		$log = array_slice( $log, 0, 50 );
 		update_option( 'wpfh_sr_404_log', $log );
+		do_action( 'wpfh_sr_on_404_recorded', $path, $ip );
 	}
 }
