@@ -4,7 +4,7 @@ Tags: 404 redirect, smart redirect, 301 redirect, 404 healer, fuzzy matching
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -40,6 +40,9 @@ Broken links and 404 errors destroy user experience and drain search engine rank
 3. Access **Tools > Smart Redirect** to manage custom rules and view auto-healed logs.
 
 == Changelog ==
+
+= 1.1.4 =
+* Remove hardcoded /upgrade routes, unify Sentinel schema, add rule deletion & 404 log UI, wire Pro Regex/404 Alert UIs, scope Pro UTM to frontend.
 
 
 = 1.1.3 =
