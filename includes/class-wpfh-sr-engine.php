@@ -144,6 +144,9 @@ class WPFH_SR_Engine {
 		) );
 		$log = array_slice( $log, 0, 50 );
 		update_option( 'wpfh_sr_heal_log', $log );
+		if ( class_exists( 'WPFH_Review_Nudge' ) ) {
+			WPFH_Review_Nudge::track_success( 'wpfh_sr' );
+		}
 	}
 
 	private function log_404( $path ) {

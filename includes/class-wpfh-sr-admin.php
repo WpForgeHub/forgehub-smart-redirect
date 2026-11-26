@@ -24,6 +24,43 @@ class WPFH_SR_Admin {
 		add_action( 'admin_menu', array( $this, 'add_menu_page' ) );
 		add_action( 'admin_init', array( $this, 'handle_form_actions' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( WPFH_SR_FILE ), array( $this, 'add_action_links' ) );
+
+		if ( function_exists( 'is_admin' ) && is_admin() && class_exists( 'WPFH_Review_Nudge' ) ) {
+			$nudge = new WPFH_Review_Nudge(
+				array(
+					'plugin_slug'   => 'forgehub-smart-redirect',
+					'plugin_name'   => 'ForgeHub Smart Redirect',
+					'option_prefix' => 'wpfh_sr',
+					'wporg_slug'    => 'forgehub-smart-redirect',
+					'github_url'    => 'https://github.com/WpForgeHub/forgehub-smart-redirect',
+					'min_actions'   => 5,
+					'min_days'      => 7,
+					'trigger_mode'  => 'or',
+					'screens'       => array( 'tools_page_forgehub-smart-redirect', 'plugins' ),
+					'strings'       => array(
+						/* translators: %s: Plugin name. */
+						'heading'     => sprintf( __( 'Enjoying %s?', 'forgehub-smart-redirect' ), 'ForgeHub Smart Redirect' ),
+						/* translators: %s: Plugin name. */
+						'message'     => sprintf( __( 'If %s has helped recover broken URLs and manage redirects, a quick 5-star review helps other site owners discover it and keeps development active.', 'forgehub-smart-redirect' ), 'ForgeHub Smart Redirect' ),
+						'rate_cta'    => __( 'Rate 5 Stars on WordPress.org', 'forgehub-smart-redirect' ),
+						'github_cta'  => __( 'Star on GitHub', 'forgehub-smart-redirect' ),
+						'later_cta'   => __( 'Maybe later', 'forgehub-smart-redirect' ),
+						'dismiss_cta' => __( 'Already did / Dismiss', 'forgehub-smart-redirect' ),
+					),
+				)
+			);
+			$nudge->register();
+		}
+	}
+
+	private function get_upgrade_url() {
+		$url = 'https://wpforgehub.com/product/smart-redirect/#pricing';
+		// <wpfh-pro-only>
+		if ( function_exists( 'wpfh_sr_fs' ) ) {
+			$url = wpfh_sr_fs()->get_upgrade_url();
+		}
+		// </wpfh-pro-only>
+		return $url;
 	}
 
 	public function add_menu_page() {
@@ -45,7 +82,7 @@ class WPFH_SR_Admin {
 		if ( $is_pro ) {
 			array_unshift( $links, $settings_link );
 		} else {
-			$pro_link = '<a href="https://wpforgehub.com/product/smart-redirect/#pricing" style="color:#10b981;font-weight:700;" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Upgrade to Pro', 'forgehub-smart-redirect' ) . '</a>';
+			$pro_link = '<a href="' . esc_url( $this->get_upgrade_url() ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Priority Support & Pro', 'forgehub-smart-redirect' ) . '</a>';
 			array_unshift( $links, $settings_link, $pro_link );
 		}
 		return $links;
@@ -79,6 +116,9 @@ class WPFH_SR_Admin {
 					'status' => $status,
 				);
 				update_option( 'wpfh_sr_custom_redirects', $rules );
+				if ( class_exists( 'WPFH_Review_Nudge' ) ) {
+					WPFH_Review_Nudge::track_success( 'wpfh_sr' );
+				}
 			}
 		} elseif ( 'delete_redirect' === $action && isset( $_POST['rule_index'] ) ) {
 			$idx   = absint( $_POST['rule_index'] );
@@ -244,34 +284,15 @@ class WPFH_SR_Admin {
 			<?php if ( $is_pro ) : ?>
 				<?php do_action( 'wpfh_sr_admin_pro_sections' ); ?>
 			<?php else : ?>
-			<!-- Pro Upsell -->
-			<div class="wpfh-pro-card" style="background:#0f172a;border:1px solid #1e293b;border-radius:12px;padding:24px;color:#e2e8f0;">
-				<div style="display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #334155;padding-bottom:16px;margin-bottom:16px;">
-					<div>
-						<h3 style="margin:0;font-size:18px;color:#f8fafc;">🚀 Smart Redirect Pro</h3>
-						<p style="margin:4px 0 0 0;color:#94a3b8;font-size:13px;">Advanced regex rules, 404 webhook alerts, and automated WooCommerce slug tracking.</p>
-					</div>
-					<a href="https://wpforgehub.com/product/smart-redirect/#pricing" target="_blank" rel="noopener noreferrer" style="background:#10b981;color:#ffffff;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;display:inline-block;">Upgrade to Pro &rarr;</a>
-				</div>
-				<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:13px;">
-					<div style="background:#1e293b;padding:12px 16px;border-radius:8px;">
-						<strong style="color:#38bdf8;">🔄 Automated Slug Change Sentinel</strong>
-						<p style="margin:4px 0 0 0;color:#cbd5e1;">Never lose SEO rankings when renaming blog posts or products. Creates 301 redirects instantly upon slug update.</p>
-					</div>
-					<div style="background:#1e293b;padding:12px 16px;border-radius:8px;">
-						<strong style="color:#38bdf8;">⚙️ Regular Expression (Regex) Rules</strong>
-						<p style="margin:4px 0 0 0;color:#cbd5e1;">Map complex URL patterns and preserve query parameters dynamically.</p>
-					</div>
-					<div style="background:#1e293b;padding:12px 16px;border-radius:8px;">
-						<strong style="color:#38bdf8;">🔔 Instant 404 Spike Webhooks</strong>
-						<p style="margin:4px 0 0 0;color:#cbd5e1;">Get alerted on Slack, Discord, or Email if a sudden spike in 404 errors occurs on your store.</p>
-					</div>
-					<div style="background:#1e293b;padding:12px 16px;border-radius:8px;">
-						<strong style="color:#38bdf8;">🌍 UTM Parameter Preservation</strong>
-						<p style="margin:4px 0 0 0;color:#cbd5e1;">Preserve marketing UTM tags and affiliate query strings seamlessly across all redirects.</p>
-					</div>
-				</div>
-			</div>
+			<p class="wpfh-sr-footer-note" style="margin-top:20px;color:#50575e;font-size:13px;">
+				<?php
+				printf(
+					/* translators: %s: link to optional Pro edition and priority support */
+					esc_html__( 'Need automated slug-change tracking, regex rules, 404 spike webhooks, or priority support? %s', 'forgehub-smart-redirect' ),
+					'<a href="' . esc_url( $this->get_upgrade_url() ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Priority Support & Pro', 'forgehub-smart-redirect' ) . '</a>'
+				);
+				?>
+			</p>
 			<?php endif; ?>
 		</div>
 		<?php

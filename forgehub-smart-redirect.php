@@ -3,7 +3,7 @@
  * Plugin Name:       ForgeHub Smart Redirect
  * Plugin URI:        https://wpforgehub.com/product/smart-redirect/
  * Description:       Intelligent 404 auto-healing with fuzzy slug matching, unresolved 404 logging, and custom 301/302 redirect management.
- * Version:           1.1.5
+ * Version:           1.2.0
  * Author:            WPForgeHub
  * Author URI:        https://wpforgehub.com
  * License:           GPLv2 or later
@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPFH_SR_VERSION', '1.1.5' );
+define( 'WPFH_SR_VERSION', '1.2.0' );
 define( 'WPFH_SR_FILE', __FILE__ );
 define( 'WPFH_SR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WPFH_SR_URL', plugin_dir_url( __FILE__ ) );
@@ -89,6 +89,8 @@ function wpfh_sr_uninstall_cleanup() {
 	delete_option( 'wpfh_sr_regex_redirects' );
 	delete_option( 'wpfh_sr_404_alert_threshold' );
 	delete_option( 'wpfh_sr_alert_webhook_url' );
+	delete_option( 'wpfh_sr_review_nudge' );
+	delete_metadata( 'user', 0, 'wpfh_sr_review_nudge_dismissed', '', true );
 	delete_transient( 'wpfh_sr_404_spike_counter' );
 	delete_transient( 'wpfh_sr_spike_alert_sent' );
 }
@@ -115,6 +117,7 @@ final class WPFH_Smart_Redirect {
 	public function init() {
 		// Note: load_plugin_textdomain is intentionally omitted as WordPress.org automatically loads translations since WP 4.6.
 
+		require_once WPFH_SR_PATH . 'includes/class-wpfh-review-nudge.php';
 		require_once WPFH_SR_PATH . 'includes/class-wpfh-sr-engine.php';
 		require_once WPFH_SR_PATH . 'includes/class-wpfh-sr-admin.php';
 

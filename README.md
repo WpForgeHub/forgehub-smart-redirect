@@ -5,7 +5,7 @@
 </p>
 
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Version](https://img.shields.io/badge/Version-v1.1.5-purple.svg)](https://github.com/WpForgeHub/forgehub-smart-redirect/releases/tag/v1.1.5)
+[![Version](https://img.shields.io/badge/Version-v1.2.0-purple.svg)](https://github.com/WpForgeHub/forgehub-smart-redirect/releases/tag/v1.2.0)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://php.net/)
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-21759b.svg)](https://wordpress.org/)
 [![Tested](https://img.shields.io/badge/Tested-WP%207.1-brightgreen.svg)](https://wordpress.org/)

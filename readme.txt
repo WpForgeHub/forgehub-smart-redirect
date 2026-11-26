@@ -4,7 +4,7 @@ Tags: 404 redirect, smart redirect, 301 redirect, 404 healer, fuzzy matching
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.1.5
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,11 @@ No. ForgeHub Smart Redirect runs entirely locally on your WordPress server with 
 1. Smart Redirect admin page — 404 auto-heal statistics, custom 301/302 redirect manager, unresolved 404 log, and auto-healed redirect log.
 
 == Changelog ==
+
+= 1.2.0 =
+* Improvement: Zero-Nag admin experience — replaced the Pro upsell card with a calm single-line Priority Support & Pro footer link routed through `get_upgrade_url()`.
+* Feature: Added value-moment 5-star review & GitHub star nudge (`WPFH_Review_Nudge`), hidden on Day 0 and permanently dismissible in one click.
+* Cleanup: Added review nudge state cleanup on uninstall.
 
 = 1.1.5 =
 * Compliance: removed all premium/license wrapper code from the WordPress.org free distribution and added uninstall cleanup hook for commercial builds.
