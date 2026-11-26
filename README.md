@@ -5,7 +5,7 @@
 </p>
 
 [![License](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
-[![Version](https://img.shields.io/badge/Version-v1.1.4-purple.svg)](https://github.com/WpForgeHub/forgehub-smart-redirect/releases/tag/v1.1.4)
+[![Version](https://img.shields.io/badge/Version-v1.1.5-purple.svg)](https://github.com/WpForgeHub/forgehub-smart-redirect/releases/tag/v1.1.5)
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4.svg)](https://php.net/)
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-21759b.svg)](https://wordpress.org/)
 [![Tested](https://img.shields.io/badge/Tested-WP%207.1-brightgreen.svg)](https://wordpress.org/)
@@ -22,7 +22,7 @@
 
 ## ⚡ How 404 Auto-Healing Works
 
-When a user visits a mistyped or outdated URL (e.g. `/product/wpfh-ai-alt-text-free/` instead of `/product/ai-alt-text-free/`):
+When a user visits a mistyped or outdated URL (e.g. `/product/smart-redrect/` instead of `/product/smart-redirect/`):
 1. Smart Redirect intercepts the 404 event.
 2. It strips known prefixes and compares slug distance (`similar_text`) against all published store products, pages, and blog posts.
 3. If confidence is >= 65%, it immediately issues an SEO-friendly 301 Permanent Redirect to the exact matching resource!

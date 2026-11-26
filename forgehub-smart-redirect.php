@@ -2,8 +2,8 @@
 /**
  * Plugin Name:       ForgeHub Smart Redirect
  * Plugin URI:        https://wpforgehub.com/product/smart-redirect/
- * Description:       Intelligent 404 auto-healing with fuzzy slug matching, outbound upgrade click tracker, and instant 301 redirect management.
- * Version:           1.1.4
+ * Description:       Intelligent 404 auto-healing with fuzzy slug matching, unresolved 404 logging, and custom 301/302 redirect management.
+ * Version:           1.1.5
  * Author:            WPForgeHub
  * Author URI:        https://wpforgehub.com
  * License:           GPLv2 or later
@@ -18,11 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPFH_SR_VERSION', '1.1.4' );
+define( 'WPFH_SR_VERSION', '1.1.5' );
 define( 'WPFH_SR_FILE', __FILE__ );
 define( 'WPFH_SR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WPFH_SR_URL', plugin_dir_url( __FILE__ ) );
 
+// <wpfh-pro-only>
 /**
  * Freemius SDK integration wrapper
  */
@@ -31,11 +32,9 @@ if ( ! function_exists( 'wpfh_sr_fs' ) ) {
 		global $wpfh_sr_fs;
 
 		if ( ! isset( $wpfh_sr_fs ) ) {
-			if ( file_exists( WPFH_SR_PATH . 'freemius/start.php' ) ) {
-				require_once WPFH_SR_PATH . 'freemius/start.php';
-			}
-
-			if ( function_exists( 'fs_dynamic_init' ) ) {
+			$fs_path = WPFH_SR_PATH . 'freemius/start.php';
+			if ( file_exists( $fs_path ) ) {
+				require_once $fs_path;
 				$wpfh_sr_fs = fs_dynamic_init( array(
 					'id'             => '45084',
 					'slug'           => 'forgehub-smart-redirect',
@@ -47,8 +46,13 @@ if ( ! function_exists( 'wpfh_sr_fs' ) ) {
 					'menu'           => array(
 						'slug'       => 'forgehub-smart-redirect',
 						'first-path' => 'tools.php?page=forgehub-smart-redirect',
+						'parent'     => array(
+							'slug' => 'tools.php',
+						),
 					),
 				) );
+				// Freemius forbids uninstall.php in premium builds; use its after_uninstall hook there.
+				$wpfh_sr_fs->add_action( 'after_uninstall', 'wpfh_sr_uninstall_cleanup' );
 			} else {
 				// Fallback object for Free / Filter-based Pro distribution
 				$wpfh_sr_fs = new class {
@@ -73,6 +77,22 @@ if ( ! function_exists( 'wpfh_sr_fs' ) ) {
 
 	wpfh_sr_fs();
 }
+
+/**
+ * Removes plugin options (Freemius premium build; free build uses uninstall.php).
+ */
+function wpfh_sr_uninstall_cleanup() {
+	delete_option( 'wpfh_sr_custom_redirects' );
+	delete_option( 'wpfh_sr_heal_log' );
+	delete_option( 'wpfh_sr_404_log' );
+	delete_option( 'wpfh_sr_click_stats' );
+	delete_option( 'wpfh_sr_regex_redirects' );
+	delete_option( 'wpfh_sr_404_alert_threshold' );
+	delete_option( 'wpfh_sr_alert_webhook_url' );
+	delete_transient( 'wpfh_sr_404_spike_counter' );
+	delete_transient( 'wpfh_sr_spike_alert_sent' );
+}
+// </wpfh-pro-only>
 
 /**
  * Main Plugin Class
@@ -101,6 +121,7 @@ final class WPFH_Smart_Redirect {
 		WPFH_SR_Engine::get_instance();
 		WPFH_SR_Admin::get_instance();
 
+		// <wpfh-pro-only>
 		// Pro Modules
 		if ( function_exists( 'wpfh_sr_fs' ) && wpfh_sr_fs()->can_use_premium_code() ) {
 			$pro_sentinel = WPFH_SR_PATH . 'includes/pro/class-wpfh-sr-sentinel.php';
@@ -125,6 +146,7 @@ final class WPFH_Smart_Redirect {
 				WPFH_SR_UTM::get_instance();
 			}
 		}
+		// </wpfh-pro-only>
 	}
 }
 

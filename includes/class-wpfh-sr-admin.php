@@ -38,11 +38,14 @@ class WPFH_SR_Admin {
 
 	public function add_action_links( $links ) {
 		$settings_link = '<a href="' . esc_url( admin_url( 'tools.php?page=forgehub-smart-redirect' ) ) . '">' . esc_html__( 'Settings', 'forgehub-smart-redirect' ) . '</a>';
+		$is_pro        = false;
+		// <wpfh-pro-only>
 		$is_pro        = function_exists( 'wpfh_sr_fs' ) && wpfh_sr_fs()->can_use_premium_code();
+		// </wpfh-pro-only>
 		if ( $is_pro ) {
 			array_unshift( $links, $settings_link );
 		} else {
-			$pro_link = '<a href="https://wpforgehub.com/product/smart-redirect/" style="color:#10b981;font-weight:700;" target="_blank">' . esc_html__( 'Upgrade to Pro', 'forgehub-smart-redirect' ) . '</a>';
+			$pro_link = '<a href="https://wpforgehub.com/product/smart-redirect/#pricing" style="color:#10b981;font-weight:700;" target="_blank" rel="noopener noreferrer">' . esc_html__( 'Upgrade to Pro', 'forgehub-smart-redirect' ) . '</a>';
 			array_unshift( $links, $settings_link, $pro_link );
 		}
 		return $links;
@@ -93,7 +96,10 @@ class WPFH_SR_Admin {
 		$heal_log  = get_option( 'wpfh_sr_heal_log', array() );
 		$log_404   = get_option( 'wpfh_sr_404_log', array() );
 		$rules     = get_option( 'wpfh_sr_custom_redirects', array() );
+		$is_pro    = false;
+		// <wpfh-pro-only>
 		$is_pro    = function_exists( 'wpfh_sr_fs' ) && wpfh_sr_fs()->can_use_premium_code();
+		// </wpfh-pro-only>
 		?>
 		<div class="wrap" style="max-width:1050px;">
 			<h1>⚡ <?php esc_html_e( 'Smart Redirect & 404 Auto-Healer', 'forgehub-smart-redirect' ); ?></h1>
@@ -245,7 +251,7 @@ class WPFH_SR_Admin {
 						<h3 style="margin:0;font-size:18px;color:#f8fafc;">🚀 Smart Redirect Pro</h3>
 						<p style="margin:4px 0 0 0;color:#94a3b8;font-size:13px;">Advanced regex rules, 404 webhook alerts, and automated WooCommerce slug tracking.</p>
 					</div>
-					<a href="https://wpforgehub.com/product/smart-redirect/" target="_blank" style="background:#10b981;color:#ffffff;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;display:inline-block;">Upgrade to Pro &rarr;</a>
+					<a href="https://wpforgehub.com/product/smart-redirect/#pricing" target="_blank" rel="noopener noreferrer" style="background:#10b981;color:#ffffff;padding:8px 16px;border-radius:6px;text-decoration:none;font-weight:700;font-size:13px;display:inline-block;">Upgrade to Pro &rarr;</a>
 				</div>
 				<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:13px;">
 					<div style="background:#1e293b;padding:12px 16px;border-radius:8px;">
