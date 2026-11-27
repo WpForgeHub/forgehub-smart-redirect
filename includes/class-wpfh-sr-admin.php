@@ -34,9 +34,9 @@ class WPFH_SR_Admin {
 					'wporg_slug'    => 'forgehub-smart-redirect',
 					'github_url'    => 'https://github.com/WpForgeHub/forgehub-smart-redirect',
 					'min_actions'   => 5,
-					'min_days'      => 7,
+					'min_days'      => 14,
 					'trigger_mode'  => 'or',
-					'screens'       => array( 'tools_page_forgehub-smart-redirect', 'plugins' ),
+					'screens'       => array( 'tools_page_forgehub-smart-redirect' ),
 					'strings'       => array(
 						/* translators: %s: Plugin name. */
 						'heading'     => sprintf( __( 'Enjoying %s?', 'forgehub-smart-redirect' ), 'ForgeHub Smart Redirect' ),
@@ -44,8 +44,8 @@ class WPFH_SR_Admin {
 						'message'     => sprintf( __( 'If %s has helped recover broken URLs and manage redirects, a quick 5-star review helps other site owners discover it and keeps development active.', 'forgehub-smart-redirect' ), 'ForgeHub Smart Redirect' ),
 						'rate_cta'    => __( 'Rate 5 Stars on WordPress.org', 'forgehub-smart-redirect' ),
 						'github_cta'  => __( 'Star on GitHub', 'forgehub-smart-redirect' ),
-						'later_cta'   => __( 'Maybe later', 'forgehub-smart-redirect' ),
-						'dismiss_cta' => __( 'Already did / Dismiss', 'forgehub-smart-redirect' ),
+						'later_cta'   => __( 'Remind me in 14 days', 'forgehub-smart-redirect' ),
+						'dismiss_cta' => __( "Don't show again", 'forgehub-smart-redirect' ),
 					),
 				)
 			);
@@ -294,6 +294,48 @@ class WPFH_SR_Admin {
 				?>
 			</p>
 			<?php endif; ?>
+
+			<?php
+			if ( class_exists( 'WPFH_Help_Tools_Card' ) ) {
+				$help_card = new WPFH_Help_Tools_Card(
+					array(
+						'plugin_name' => 'ForgeHub Smart Redirect',
+						'docs_url'    => 'https://wpforgehub.com/docs/',
+						'support_url' => 'https://wordpress.org/support/plugin/forgehub-smart-redirect/',
+						'catalog_url' => 'https://wpforgehub.com/#products',
+						'theme'       => 'dark',
+						'tools'       => array(
+							array(
+								'name'    => 'ForgeHub Image Memory Guard',
+								'tagline' => __( 'Prevent PHP fatal memory errors on large media library uploads.', 'forgehub-smart-redirect' ),
+								'url'     => 'https://wpforgehub.com/product/image-memory-guard/',
+							),
+							array(
+								'name'    => 'ForgeHub Broken Links Checker',
+								'tagline' => __( 'Scan posts and pages for dead outbound and internal URLs.', 'forgehub-smart-redirect' ),
+								'url'     => 'https://wpforgehub.com/product/broken-links/',
+							),
+							array(
+								'name'    => 'ForgeHub SEO Meta & Schema',
+								'tagline' => __( 'Lightweight meta tags, OpenGraph, and JSON-LD schema with zero bloat.', 'forgehub-smart-redirect' ),
+								'url'     => 'https://wpforgehub.com/product/seo-meta-schema/',
+							),
+						),
+						'strings'     => array(
+							'help_heading'  => __( 'Help & Documentation', 'forgehub-smart-redirect' ),
+							/* translators: %s: Plugin name. */
+							'help_desc'     => sprintf( __( 'Need setup guides, 404 auto-healing tips, or answers for %s?', 'forgehub-smart-redirect' ), 'ForgeHub Smart Redirect' ),
+							'docs_cta'      => __( 'Read Documentation', 'forgehub-smart-redirect' ),
+							'support_cta'   => __( 'WordPress.org Support', 'forgehub-smart-redirect' ),
+							'tools_heading' => __( 'Other Free ForgeHub Tools', 'forgehub-smart-redirect' ),
+							'tools_cta'     => __( 'Browse All Free Tools', 'forgehub-smart-redirect' ),
+							'tool_link_cta' => __( 'Explore tool', 'forgehub-smart-redirect' ),
+						),
+					)
+				);
+				$help_card->render();
+			}
+			?>
 		</div>
 		<?php
 	}

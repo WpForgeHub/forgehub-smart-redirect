@@ -118,6 +118,7 @@ final class WPFH_Smart_Redirect {
 		// Note: load_plugin_textdomain is intentionally omitted as WordPress.org automatically loads translations since WP 4.6.
 
 		require_once WPFH_SR_PATH . 'includes/class-wpfh-review-nudge.php';
+		require_once WPFH_SR_PATH . 'includes/class-wpfh-help-tools-card.php';
 		require_once WPFH_SR_PATH . 'includes/class-wpfh-sr-engine.php';
 		require_once WPFH_SR_PATH . 'includes/class-wpfh-sr-admin.php';
 

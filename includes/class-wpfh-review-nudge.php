@@ -8,7 +8,7 @@
  * dismissed in a single click (via AJAX or non-JS fallback).
  *
  * @package WPForgeHub\CodeHub
- * @version 1.0.0
+ * @version 1.1.0
  * @author  WPForgeHub <https://wpforgehub.com>
  * @license GPLv2 or later
  */
@@ -128,7 +128,7 @@ if ( ! class_exists( 'WPFH_Review_Nudge' ) ) {
 		 *     @type string $review_url     Optional. Explicit review URL (overrides $wporg_slug).
 		 *     @type string $github_url     Optional. GitHub repository URL. Empty hides the GitHub button.
 		 *     @type int    $min_actions    Optional. Completed actions threshold. Default 5.
-		 *     @type int    $min_days       Optional. Days since install threshold. Default 7.
+		 *     @type int    $min_days       Optional. Days since install threshold. Default 14.
 		 *     @type string $trigger_mode   Optional. 'or' or 'and'. Default 'or'.
 		 *     @type array  $screens        Optional. Allowed WP_Screen IDs. Default array().
 		 *     @type string $capability     Optional. Required capability. Default 'manage_options'.
@@ -167,7 +167,7 @@ if ( ! class_exists( 'WPFH_Review_Nudge' ) ) {
 				: '';
 
 			$this->min_actions = isset( $config['min_actions'] ) ? max( 0, (int) $config['min_actions'] ) : 5;
-			$this->min_days    = isset( $config['min_days'] ) ? max( 0, (int) $config['min_days'] ) : 7;
+			$this->min_days    = isset( $config['min_days'] ) ? max( 0, (int) $config['min_days'] ) : 14;
 
 			$mode               = isset( $config['trigger_mode'] ) ? strtolower( (string) $config['trigger_mode'] ) : 'or';
 			$this->trigger_mode = ( 'and' === $mode ) ? 'and' : 'or';
@@ -188,8 +188,8 @@ if ( ! class_exists( 'WPFH_Review_Nudge' ) ) {
 				),
 				'rate_cta'    => 'Rate 5 Stars on WordPress.org',
 				'github_cta'  => 'Star on GitHub',
-				'later_cta'   => 'Maybe later',
-				'dismiss_cta' => 'Already did / Dismiss',
+				'later_cta'   => 'Remind me in 14 days',
+				'dismiss_cta' => 'Don\'t show again',
 			);
 
 			$custom_strings = ( ! empty( $config['strings'] ) && is_array( $config['strings'] ) ) ? $config['strings'] : array();
