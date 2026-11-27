@@ -39,6 +39,22 @@ When a user visits a mistyped or outdated URL (e.g. `/product/smart-redrect/` in
 
 ---
 
+## 🔗 Links & Resources
+
+- **Plugin Page:** [https://wpforgehub.com/product/smart-redirect/](https://wpforgehub.com/product/smart-redirect/)
+- **Documentation & Help:** [wpforgehub.com/docs](https://wpforgehub.com/docs/)
+- **More Free WordPress Plugins:** [wpforgehub.com](https://wpforgehub.com/#products)
+
+---
+
 ## 📄 License
 
 GPLv2 or later &copy; [WPForgeHub](https://wpforgehub.com).
+
+---
+
+## 📸 Admin Preview
+
+<p align="center">
+  <img src="assets/screenshot-1.png" alt="ForgeHub Smart Redirect WordPress Admin Settings" width="100%" />
+</p>
